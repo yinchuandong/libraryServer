@@ -6,13 +6,57 @@ class UserAction extends Action{
 		
 	}
 	
+	/**
+	 * 注册的方法
+	 */
 	public function register(){
-		echo 'register';
+		vendor("Gw.Gwtxz");
+		$userModel = new UserModel();
+		$studentNumber = $_GET['studentNumber'];
+		$password = $_GET['password'];
+		$schoolId = $_GET['school_id'];
+
+		if(empty($studentNumber) || empty($password) || empty($schoolId)){
+			$this->ajaxReturn('', '数据不合法', 0);
+		}
+		
+		if ($userModel->isExsitUser($studentNumber, $schoolId)){
+			$this->ajaxReturn('', '该用户已经存在', 1);
+		}
+		
+		$field = array(
+				'username' => $studentNumber,
+				'password' => $password,
+				'login-form-type'=> 'pwd'
+		);
+		$user = new Gwtxz();
+		$formUrl = 'http://xg.gdufs.edu.cn/pkmslogin.form';//学工管理的登陆框
+		$requestUrl = $user->getRequestUrl($field['username'], 4);//Gwtxz类里内置的一些请求地址
+		if($user->checkField($field , $formUrl)){
+			$user->saveContent($requestUrl);
+			$data = array(
+					'studentNumber' => $studentNumber,
+					'username' => $user->getName(2),
+					'school_id' => $schoolId,
+					'academy' => $user->getAcademy(2),
+					'major' => $user->getMajor(2)
+			);
+			if($userModel->add($data)){
+				$this->ajaxReturn('','注册成功',1);
+			}else{
+				$this->ajaxReturn('','注册失败',0);
+			}
+		}
+		
 	}
 	
+	/**
+	 * 登陆
+	 * @return json{data:"", info:"", status: 1/0}
+	 */
 	public function login(){
 		vendor("Gw.Library");
-		$User = new Library();
+		$library = new Library();
 		$requestUrl = "http://lib.gdufs.edu.cn/uindex.php";
 		
 		$formUrl = 'http://lib.gdufs.edu.cn/bor.php';
@@ -20,14 +64,26 @@ class UserAction extends Action{
 		$field = array(
 			'userid'=>'20111003632',
 			'userpwd'=>'yin543211',
-			'imageField.x'=>'18',
-			'imageField.y'=>'4',
 		);
 		
-		$User->checkField($field, $formUrl);
-		$uriList = $User->getFinalUrl($requestUrl);
-		var_dump($uriList);
+		if($library->checkField($field, $formUrl)){
+			$this->ajaxReturn('', '', 1);
+		}else{
+			$this->ajaxReturn('', '用户名或密码错误', 0);
+		}
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
 
 ?>
