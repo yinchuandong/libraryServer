@@ -1,6 +1,11 @@
 <?php
-// 本类由系统自动生成，仅供测试用途
+/**
+ * 
+ * @author yinchuandong
+ *
+ */
 class IndexAction extends Action {
+	
     public function index(){
     	echo 2;
     }
