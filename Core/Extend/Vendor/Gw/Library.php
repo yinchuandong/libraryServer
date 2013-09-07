@@ -175,6 +175,14 @@ class Library {
 // 		var_dump($content);
 	}
 	
+	/**
+	 * 续借图书
+	 * @param string $url
+	 */
+	public function doRenew($url){
+		
+	}
+	
 	
 	
 	//=====================一些工具函数============================================

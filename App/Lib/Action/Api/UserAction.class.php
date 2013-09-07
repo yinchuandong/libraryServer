@@ -10,7 +10,6 @@ class UserAction extends Action{
 	 * 注册的方法
 	 */
 	public function register(){
-		vendor("Gw.Gwtxz");
 		$userModel = new UserModel();
 		$studentNumber = $_GET['studentNumber'];
 		$password = $_GET['password'];
@@ -29,6 +28,7 @@ class UserAction extends Action{
 				'password' => $password,
 				'login-form-type'=> 'pwd'
 		);
+		vendor("Gw.Gwtxz");
 		$user = new Gwtxz();
 		$formUrl = 'http://xg.gdufs.edu.cn/pkmslogin.form';//学工管理的登陆框
 		$requestUrl = $user->getRequestUrl($field['username'], 4);//Gwtxz类里内置的一些请求地址
@@ -52,18 +52,26 @@ class UserAction extends Action{
 	
 	/**
 	 * 登陆
+	 * @param studentNumber
+	 * @param string password
+	 * @param int school_id
 	 * @return json{data:"", info:"", status: 1/0}
 	 */
 	public function login(){
+		$studentNumber = $_GET['studentNumber'];
+		$password = $_GET['password'];
+		$schoolId = $_GET['school_id'];
+		if(empty($studentNumber) || empty($password) || empty($schoolId)){
+			$this->ajaxReturn('', '数据不合法', 0);
+		}
 		vendor("Gw.Library");
 		$library = new Library();
 		$requestUrl = "http://lib.gdufs.edu.cn/uindex.php";
-		
 		$formUrl = 'http://lib.gdufs.edu.cn/bor.php';
 		
 		$field = array(
-			'userid'=>'20111003632',
-			'userpwd'=>'yin543211',
+			'userid' => $studentNumber,
+			'userpwd' => $password,
 		);
 		
 		if($library->checkField($field, $formUrl)){

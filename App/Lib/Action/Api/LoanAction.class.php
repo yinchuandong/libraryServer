@@ -4,12 +4,11 @@ class LoanAction extends Action{
 	
 	/**
 	 * 获得借阅列表
+	 * @param studentNumber
+	 * @param string password
+	 * @param int school_id
 	 */
 	public function getLoanList(){
-		vendor("Gw.Library");
-		$library = new Library();
-		$requestUrl = "http://lib.gdufs.edu.cn/uindex.php";
-		$formUrl = 'http://lib.gdufs.edu.cn/bor.php';
 		
 		$studentNumber = $_GET['studentNumber'];
 		$password = $_GET['password'];
@@ -19,9 +18,14 @@ class LoanAction extends Action{
 		}
 		
 		$field = array(
-			'userid'=>'20111003632',
-			'userpwd'=>'yin543211',
+			'userid' => $studentNumber,
+			'userpwd' => $password,
 		);
+		
+		vendor("Gw.Library");
+		$library = new Library();
+		$requestUrl = "http://lib.gdufs.edu.cn/uindex.php";
+		$formUrl = 'http://lib.gdufs.edu.cn/bor.php';
 		
 		if(!$library->checkField($field, $formUrl)){
 			$this->ajaxReturn('', '用户名或密码错误', 0);
@@ -43,12 +47,11 @@ class LoanAction extends Action{
 	
 	/**
 	 * 获得历史记录
+	 * @param studentNumber
+	 * @param string password
+	 * @param int school_id
 	 */
 	public function getHistoryList(){
-		vendor("Gw.Library");
-		$library = new Library();
-		$requestUrl = "http://lib.gdufs.edu.cn/uindex.php";
-		$formUrl = 'http://lib.gdufs.edu.cn/bor.php';
 		
 		$studentNumber = $_GET['studentNumber'];
 		$password = $_GET['password'];
@@ -58,9 +61,15 @@ class LoanAction extends Action{
 		}
 	
 		$field = array(
-				'userid'=>'20111003632',
-				'userpwd'=>'yin543211',
+			'userid' => $studentNumber,
+			'userpwd' => $password,
 		);
+		
+		vendor("Gw.Library");
+		$library = new Library();
+		$requestUrl = "http://lib.gdufs.edu.cn/uindex.php";
+		$formUrl = 'http://lib.gdufs.edu.cn/bor.php';
+		
 	
 		if(!$library->checkField($field, $formUrl)){
 			$this->ajaxReturn('', '用户名或密码错误', 0);
@@ -76,16 +85,71 @@ class LoanAction extends Action{
 				'num' => $num,
 				'list' => $list
 		);
-// 		$this->ajaxReturn($returnData , '请求成功', 1);
+		$this->ajaxReturn($returnData , '请求成功', 1);
 	}
 	
-	
+	//==============================================
 	/**
-	 * 续借
+	 * notice: 此方法目前返回的还没做好
+	 * 续借，通过get方法传入
+	 * @param studentNumber
+	 * @param string password
+	 * @param int school_id
+	 * @param string books 要续借的书的id，如果有多本书，用|分开
+	 * 
 	 */
-	public function doRenew(){
+	public function renew(){
+		$studentNumber = $_GET['studentNumber'];
+		$password = $_GET['password'];
+		$schoolId = $_GET['school_id'];
+		$books = $_GET['books'];
+// 		if(empty($studentNumber) || empty($password) || empty($schoolId) || empty($books)){
+// 			$this->ajaxReturn('', '数据不合法', 0);
+// 		}
+		
+		$bookArr = explode('|', $books);
+		$bookquery = '';
+		foreach ($bookArr as $id){
+			$bookquery .= '&'.$id.'=Y';
+		}
+		
+		vendor("Gw.Library");
+		$library = new Library();
+		$requestUrl = "http://lib.gdufs.edu.cn/uindex.php";
+		$formUrl = 'http://lib.gdufs.edu.cn/bor.php';
+		
+		
+		$field = array(
+				'userid'=>'20111003632',
+				'userpwd'=>'yin543211',
+		);
+		
+		if(!$library->checkField($field, $formUrl)){
+			$this->ajaxReturn('', '用户名或密码错误', 0);
+		}
+		$uriList = $library->getFinalUrl($requestUrl);
+		$renewUrl = $library->getRenewUrl($uriList['url'][0]);
+		
+		$renewApartUrl = $renewUrl['renewApart'].$bookquery;
+		$library->saveContent($renewApartUrl);
+// 		$content = $library->getContent();
+// 		var_dump($content);
 		
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
