@@ -6,7 +6,9 @@ class LoanModel extends CommonModel{
 	}
 	
 	public function addLoanList($studentNumber, $schoolId, $list){
-	
+		//先删除原来的数据
+		$this->where(array('studentNumber'=>$studentNumber, 'school_id'=>$schoolId))->delete();
+		
 		$len = count($list['id']);
 		for($i = 0; $i<$len; $i++){
 			$id = $list['id'][$i];
@@ -14,7 +16,7 @@ class LoanModel extends CommonModel{
 			$author = $list['author'][$i];
 			$title = $list['title'][$i];
 			$publishYear = $list['publishYear'][$i];
-			$returnTime = $list['returnDate'][$i];
+			$returnDate = $list['returnDate'][$i];
 			$callNumber = $list['callNumber'][$i];
 			$payment = $list['payment'][$i];
 			$location = $list['location'][$i];
@@ -27,7 +29,7 @@ class LoanModel extends CommonModel{
 					'url' => $url,
 					'publishYear' => $publishYear,
 					'callNumber' => $callNumber,
-					'returnTime' => $returnTime,
+					'returnDate' => $returnDate,
 					'payment' => trim($payment),
 					'location' => $location
 			);
