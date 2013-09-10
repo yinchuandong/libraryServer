@@ -2,7 +2,7 @@
 class HistoryModel extends CommonModel{
 	
 	public function addHistoryList($studentNumber, $schoolId, $list){
-		$this->where(array('studentNumber'=>$studentNumber, 'school_id'=>$schoolId))->delete();
+		$this->where(array('studentNumber'=>$studentNumber, 'schoolId'=>$schoolId))->delete();
 		
 		$len = count($list['url']);
 		for($i = 0; $i<$len; $i++){
@@ -16,7 +16,7 @@ class HistoryModel extends CommonModel{
 			$location = $list['location'][$i];
 			$data = array(
 					'studentNumber' => $studentNumber,
-					'school_id' => $schoolId,
+					'schoolId' => $schoolId,
 					'author' => $author,
 					'title' => $title,
 					'url' => $url,
