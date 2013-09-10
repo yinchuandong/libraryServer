@@ -39,8 +39,8 @@ class LoanAction extends Action{
 		$loanModel->addLoanList($studentNumber, $schoolId, $list);
 		$returnList = $loanModel->where(array('studentNumber'=>$studentNumber, 'school_id'=>$schoolId))->select();
 		$returnData = array(
-				'num' => $num,
-				'list' => $returnList
+// 				'num' => $num,
+				'Loan' => $returnList
 		);
 		$this->ajaxReturn($returnData , '请求成功', 1);
 		
@@ -85,8 +85,8 @@ class LoanAction extends Action{
 		$historyModel->addHistoryList($studentNumber, $schoolId, $list);
 		$returnList = $historyModel->where(array('studentNumber'=>$studentNumber, 'school_id'=>$schoolId))->select();
 		$returnData = array(
-				'num' => $num,
-				'list' => $returnList
+// 				'num' => $num,
+				'History' => $returnList //这里的键名是客户端的Model
 		);
 		$this->ajaxReturn($returnData , '请求成功', 1);
 	}
