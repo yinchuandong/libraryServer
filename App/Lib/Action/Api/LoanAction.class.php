@@ -6,13 +6,13 @@ class LoanAction extends Action{
 	 * 获得借阅列表
 	 * @param studentNumber
 	 * @param string password
-	 * @param int school_id
+	 * @param int schoolId
 	 */
 	public function getLoanList(){
 		
 		$studentNumber = $_GET['studentNumber'];
 		$password = $_GET['password'];
-		$schoolId = $_GET['school_id'];
+		$schoolId = $_GET['schoolId'];
 		if(empty($studentNumber) || empty($password) || empty($schoolId)){
 			$this->ajaxReturn('', '数据不合法', 0);
 		}
@@ -37,7 +37,7 @@ class LoanAction extends Action{
 		$list = $library->getLoanList($url);
 		$loanModel = new LoanModel();
 		$loanModel->addLoanList($studentNumber, $schoolId, $list);
-		$returnList = $loanModel->where(array('studentNumber'=>$studentNumber, 'school_id'=>$schoolId))->select();
+		$returnList = $loanModel->where(array('studentNumber'=>$studentNumber, 'schoolId'=>$schoolId))->select();
 		$returnData = array(
 // 				'num' => $num,
 				'Loan' => $returnList
@@ -50,13 +50,13 @@ class LoanAction extends Action{
 	 * 获得历史记录
 	 * @param studentNumber
 	 * @param string password
-	 * @param int school_id
+	 * @param int schoolId
 	 */
 	public function getHistoryList(){
 		
 		$studentNumber = $_GET['studentNumber'];
 		$password = $_GET['password'];
-		$schoolId = $_GET['school_id'];
+		$schoolId = $_GET['schoolId'];
 		if(empty($studentNumber) || empty($password) || empty($schoolId)){
 			$this->ajaxReturn('', '数据不合法', 0);
 		}
@@ -83,7 +83,7 @@ class LoanAction extends Action{
 		
 		$historyModel = new HistoryModel();
 		$historyModel->addHistoryList($studentNumber, $schoolId, $list);
-		$returnList = $historyModel->where(array('studentNumber'=>$studentNumber, 'school_id'=>$schoolId))->select();
+		$returnList = $historyModel->where(array('studentNumber'=>$studentNumber, 'schoolId'=>$schoolId))->select();
 		$returnData = array(
 // 				'num' => $num,
 				'History' => $returnList //这里的键名是客户端的Model
@@ -97,14 +97,14 @@ class LoanAction extends Action{
 	 * 续借，通过get方法传入
 	 * @param studentNumber
 	 * @param string password
-	 * @param int school_id
+	 * @param int schoolId
 	 * @param string books 要续借的书的id，如果有多本书，用|分开
 	 * 
 	 */
 	public function renew(){
 		$studentNumber = $_GET['studentNumber'];
 		$password = $_GET['password'];
-		$schoolId = $_GET['school_id'];
+		$schoolId = $_GET['schoolId'];
 		$books = $_GET['books'];
 // 		if(empty($studentNumber) || empty($password) || empty($schoolId) || empty($books)){
 // 			$this->ajaxReturn('', '数据不合法', 0);

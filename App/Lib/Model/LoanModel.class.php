@@ -7,7 +7,7 @@ class LoanModel extends CommonModel{
 	
 	public function addLoanList($studentNumber, $schoolId, $list){
 		//先删除原来的数据
-		$this->where(array('studentNumber'=>$studentNumber, 'school_id'=>$schoolId))->delete();
+		$this->where(array('studentNumber'=>$studentNumber, 'schoolId'=>$schoolId))->delete();
 		
 		$len = count($list['id']);
 		for($i = 0; $i<$len; $i++){
@@ -23,7 +23,7 @@ class LoanModel extends CommonModel{
 			$data = array(
 					'id' => $id,
 					'studentNumber' => $studentNumber,
-					'school_id' => $schoolId,
+					'schoolId' => $schoolId,
 					'author' => $author,
 					'title' => $title,
 					'url' => $url,

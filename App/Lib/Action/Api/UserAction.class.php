@@ -13,7 +13,7 @@ class UserAction extends Action{
 		$userModel = new UserModel();
 		$studentNumber = $_GET['studentNumber'];
 		$password = $_GET['password'];
-		$schoolId = $_GET['school_id'];
+		$schoolId = $_GET[''];
 
 		if(empty($studentNumber) || empty($password) || empty($schoolId)){
 			$this->ajaxReturn('', '数据不合法', 0);
@@ -37,7 +37,7 @@ class UserAction extends Action{
 			$data = array(
 					'studentNumber' => $studentNumber,
 					'username' => $user->getName(2),
-					'school_id' => $schoolId,
+					'' => $schoolId,
 					'academy' => $user->getAcademy(2),
 					'major' => $user->getMajor(2)
 			);
@@ -54,13 +54,13 @@ class UserAction extends Action{
 	 * 登陆
 	 * @param studentNumber
 	 * @param string password
-	 * @param int school_id
+	 * @param int 
 	 * @return json{data:"", info:"", status: 1/0}
 	 */
 	public function login(){
 		$studentNumber = $_GET['studentNumber'];
 		$password = $_GET['password'];
-		$schoolId = $_GET['school_id'];
+		$schoolId = $_GET[''];
 		if(empty($studentNumber) || empty($password) || empty($schoolId)){
 			$this->ajaxReturn('', '数据不合法', 0);
 		}
