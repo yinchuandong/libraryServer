@@ -10,9 +10,9 @@ class LoanAction extends Action{
 	 */
 	public function getLoanList(){
 		
-		$studentNumber = $_GET['studentNumber'];
-		$password = $_GET['password'];
-		$schoolId = $_GET['schoolId'];
+		$studentNumber = $_REQUEST['studentNumber'];
+		$password = $_REQUEST['password'];
+		$schoolId = $_REQUEST['schoolId'];
 		if(empty($studentNumber) || empty($password) || empty($schoolId)){
 			$this->ajaxReturn('', '数据不合法', 0);
 		}
@@ -54,9 +54,9 @@ class LoanAction extends Action{
 	 */
 	public function getHistoryList(){
 		
-		$studentNumber = $_GET['studentNumber'];
-		$password = $_GET['password'];
-		$schoolId = $_GET['schoolId'];
+		$studentNumber = $_REQUEST['studentNumber'];
+		$password = $_REQUEST['password'];
+		$schoolId = $_REQUEST['schoolId'];
 		if(empty($studentNumber) || empty($password) || empty($schoolId)){
 			$this->ajaxReturn('', '数据不合法', 0);
 		}
@@ -102,10 +102,10 @@ class LoanAction extends Action{
 	 * 
 	 */
 	public function renew(){
-		$studentNumber = $_GET['studentNumber'];
-		$password = $_GET['password'];
-		$schoolId = $_GET['schoolId'];
-		$books = $_GET['books'];
+		$studentNumber = $_REQUEST['studentNumber'];
+		$password = $_REQUEST['password'];
+		$schoolId = $_REQUEST['schoolId'];
+		$books = $_REQUEST['books'];
 // 		if(empty($studentNumber) || empty($password) || empty($schoolId) || empty($books)){
 // 			$this->ajaxReturn('', '数据不合法', 0);
 // 		}

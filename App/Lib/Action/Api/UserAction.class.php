@@ -11,9 +11,9 @@ class UserAction extends Action{
 	 */
 	public function register(){
 		$userModel = new UserModel();
-		$studentNumber = $_GET['studentNumber'];
-		$password = $_GET['password'];
-		$schoolId = $_GET['schoolId'];
+		$studentNumber = $_REQUEST['studentNumber'];
+		$password = $_REQUEST['password'];
+		$schoolId = $_REQUEST['schoolId'];
 
 		if(empty($studentNumber) || empty($password) || empty($schoolId)){
 			$this->ajaxReturn('', '数据不合法', 0);
@@ -58,9 +58,9 @@ class UserAction extends Action{
 	 * @return json{data:"", info:"", status: 1/0}
 	 */
 	public function login2(){
-		$studentNumber = $_GET['studentNumber'];
-		$password = $_GET['password'];
-		$schoolId = $_GET['schoolId'];
+		$studentNumber = $_REQUEST['studentNumber'];
+		$password = $_REQUEST['password'];
+		$schoolId = $_REQUEST['schoolId'];
 		if(empty($studentNumber) || empty($password) || empty($schoolId)){
 			$this->ajaxReturn('', '数据不合法', 0);
 		}
@@ -84,9 +84,9 @@ class UserAction extends Action{
 	
 	public function login(){
 		$userModel = new UserModel();
-		$studentNumber = $_GET['studentNumber'];
-		$password = $_GET['password'];
-		$schoolId = $_GET['schoolId'];
+		$studentNumber = $_REQUEST['studentNumber'];
+		$password = $_REQUEST['password'];
+		$schoolId = $_REQUEST['schoolId'];
 		
 		if(empty($studentNumber) || empty($password) || empty($schoolId)){
 			$this->ajaxReturn('', '数据不合法', 0);
