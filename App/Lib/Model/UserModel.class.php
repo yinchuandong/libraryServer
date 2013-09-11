@@ -12,7 +12,6 @@ class UserModel extends CommonModel{
 			'studentNumber' => $studentNumber,
 			'school_id' => $schoolId		
 		);
-		var_dump($this->where($where)->count());
 		if($this->where($where)->count() >=1){
 			return true;
 		}else {
