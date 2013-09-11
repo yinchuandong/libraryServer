@@ -13,7 +13,7 @@ class UserAction extends Action{
 		$userModel = new UserModel();
 		$studentNumber = $_GET['studentNumber'];
 		$password = $_GET['password'];
-		$schoolId = $_GET[''];
+		$schoolId = $_GET['schoolId'];
 
 		if(empty($studentNumber) || empty($password) || empty($schoolId)){
 			$this->ajaxReturn('', '数据不合法', 0);
@@ -37,7 +37,7 @@ class UserAction extends Action{
 			$data = array(
 					'studentNumber' => $studentNumber,
 					'username' => $user->getName(2),
-					'' => $schoolId,
+					'schoolId' => $schoolId,
 					'academy' => $user->getAcademy(2),
 					'major' => $user->getMajor(2)
 			);
@@ -57,10 +57,10 @@ class UserAction extends Action{
 	 * @param int 
 	 * @return json{data:"", info:"", status: 1/0}
 	 */
-	public function login(){
+	public function login2(){
 		$studentNumber = $_GET['studentNumber'];
 		$password = $_GET['password'];
-		$schoolId = $_GET[''];
+		$schoolId = $_GET['schoolId'];
 		if(empty($studentNumber) || empty($password) || empty($schoolId)){
 			$this->ajaxReturn('', '数据不合法', 0);
 		}
@@ -81,6 +81,47 @@ class UserAction extends Action{
 		}
 	}
 	
+	
+	public function login(){
+		$userModel = new UserModel();
+		$studentNumber = $_GET['studentNumber'];
+		$password = $_GET['password'];
+		$schoolId = $_GET['schoolId'];
+		
+		if(empty($studentNumber) || empty($password) || empty($schoolId)){
+			$this->ajaxReturn('', '数据不合法', 0);
+		}
+		
+		
+		$field = array(
+				'username' => $studentNumber,
+				'password' => $password,
+				'login-form-type'=> 'pwd'
+		);
+		vendor("Gw.Gwtxz");
+		$user = new Gwtxz();
+		$formUrl = 'http://xg.gdufs.edu.cn/pkmslogin.form';//学工管理的登陆框
+		$requestUrl = $user->getRequestUrl($field['username'], 4);//Gwtxz类里内置的一些请求地址
+		if($user->checkField($field , $formUrl)){
+			
+			if (!$userModel->isExsitUser($studentNumber, $schoolId)){
+				$user->saveContent($requestUrl);
+				$data = array(
+						'studentNumber' => $studentNumber,
+						'username' => $user->getName(2),
+						'schoolId' => $schoolId,
+						'academy' => $user->getAcademy(2),
+						'major' => $user->getMajor(2)
+				);
+				$userModel->add($data);
+			}else{
+				$data = $userModel->where(array('studentNumber'=>$studentNumber, 'schoolId'=>$schoolId))->select();
+			}
+			$this->ajaxReturn(array("User"=>$data), '登陆成功', 1);
+		}else{
+			$this->ajaxReturn('', '用户名或密码错误', 0);
+		}
+	}
 	
 	
 	
