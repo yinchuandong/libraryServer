@@ -17,20 +17,13 @@ class LoanAction extends Action{
 			$this->ajaxReturn('', '数据不合法', 0);
 		}
 		
-		$field = array(
-			'userid' => $studentNumber,
-			'userpwd' => $password,
-		);
 		
 		vendor("Gw.Library");
 		$library = new Library();
-		$requestUrl = "http://lib.gdufs.edu.cn/uindex.php";
-		$formUrl = 'http://lib.gdufs.edu.cn/bor.php';
-		
-		if(!$library->checkField($field, $formUrl)){
+		if(!$library->checkField($studentNumber, $password)){
 			$this->ajaxReturn('', '用户名或密码错误', 0);
 		}
-		$uriList = $library->getFinalUrl($requestUrl);
+		$uriList = $library->getFinalUrl();
 		$url = $uriList['url'][0];
 		$num = $uriList['num'][0];
 		
@@ -68,14 +61,12 @@ class LoanAction extends Action{
 		
 		vendor("Gw.Library");
 		$library = new Library();
-		$requestUrl = "http://lib.gdufs.edu.cn/uindex.php";
-		$formUrl = 'http://lib.gdufs.edu.cn/bor.php';
 		
 	
-		if(!$library->checkField($field, $formUrl)){
+		if(!$library->checkField($studentNumber, $password)){
 			$this->ajaxReturn('', '用户名或密码错误', 0);
 		}
-		$uriList = $library->getFinalUrl($requestUrl);
+		$uriList = $library->getFinalUrl();
 		$url = $uriList['url'][1];
 		$num = $uriList['num'][1];
 	
@@ -118,19 +109,16 @@ class LoanAction extends Action{
 		
 		vendor("Gw.Library");
 		$library = new Library();
-		$requestUrl = "http://lib.gdufs.edu.cn/uindex.php";
-		$formUrl = 'http://lib.gdufs.edu.cn/bor.php';
-		
 		
 		$field = array(
 				'userid'=>'20111003632',
 				'userpwd'=>'yin543211',
 		);
 		
-		if(!$library->checkField($field, $formUrl)){
+		if(!$library->checkField($studentNumber, $password)){
 			$this->ajaxReturn('', '用户名或密码错误', 0);
 		}
-		$uriList = $library->getFinalUrl($requestUrl);
+		$uriList = $library->getFinalUrl();
 		$renewUrl = $library->getRenewUrl($uriList['url'][0]);
 		
 		$renewApartUrl = $renewUrl['renewApart'].$bookquery;
