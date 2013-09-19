@@ -26,11 +26,12 @@ class HistoryModel extends CommonModel{
 					'payment' => trim($payment),
 					'location' => $location
 			);
-	
+			
 			if(!$this->data($data)->add()){
 				echo $this->getDbError();
 			}
+			
 		}
-	
 	}
+	
 }
