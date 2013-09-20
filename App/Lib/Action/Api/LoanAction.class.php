@@ -116,7 +116,7 @@ class LoanAction extends Action{
 	public function test(){
 		vendor("Gw.Factory");
 		$model = Factory::createClass('LibGw');
-		var_dump($model->checkField("20111003632", "yin54321s1"));
+		var_dump($model->checkField("20111003632", "yin543211"));
 		
 		var_dump($model->getLoanList());
 	}
