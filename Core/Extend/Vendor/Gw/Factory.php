@@ -7,11 +7,11 @@ class Factory{
 	 * @return Libbase
 	 */
 	public static function createClass($className){
-		$dir = dirname(__FILE__);
-		include $dir.'/LibBase.php';
-		include $dir.'/LibGw.php';
-		include $dir.'/LibHg.php';
 		try {
+			$dir = dirname(__FILE__);
+			include $dir.'/LibBase.php';
+			include $dir.'/LibGw.php';
+			include $dir.'/LibHg.php';
 			$reflect = new ReflectionClass($className);
 			$gw = $reflect->newInstance();
 		} catch (Exception $e) {
