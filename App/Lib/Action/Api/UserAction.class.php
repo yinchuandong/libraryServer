@@ -28,7 +28,7 @@ class UserAction extends Action{
 				'password' => $password,
 				'login-form-type'=> 'pwd'
 		);
-		vendor("Gw.Gwtxz");
+		vendor("Gw2.Gwtxz");
 		$user = new Gwtxz();
 		$formUrl = 'http://xg.gdufs.edu.cn/pkmslogin.form';//学工管理的登陆框
 		$requestUrl = $user->getRequestUrl($field['username'], 4);//Gwtxz类里内置的一些请求地址
@@ -98,7 +98,7 @@ class UserAction extends Action{
 				'password' => $password,
 				'login-form-type'=> 'pwd'
 		);
-		vendor("Gw.Gwtxz");
+		vendor("Gw2.Gwtxz");
 		$user = new Gwtxz();
 		$formUrl = 'http://xg.gdufs.edu.cn/pkmslogin.form';//学工管理的登陆框
 		$requestUrl = $user->getRequestUrl($field['username'], 4);//Gwtxz类里内置的一些请求地址
