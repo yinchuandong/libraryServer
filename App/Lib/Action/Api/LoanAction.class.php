@@ -19,14 +19,16 @@ class LoanAction extends Action{
 		
 		
 		vendor("Gw.Factory");
-		$library = Factory::createClass('LibGw');
+		$loanModel = new LoanModel();
+		$className = $loanModel->getSchoolClassById($schoolId);
+		$library = Factory::createClass($className);
 		
 		if(!$library->checkField($studentNumber, $password)){
 			$this->ajaxReturn('', '用户名或密码错误', 0);
 		}
 		
 		$list = $library->getLoanList();
-		$loanModel = new LoanModel();
+		
 		$loanModel->addLoanList($studentNumber, $schoolId, $list);
 		$returnList = $loanModel->where(array('studentNumber'=>$studentNumber, 'schoolId'=>$schoolId))->select();
 		$returnData = array(
@@ -116,7 +118,7 @@ class LoanAction extends Action{
 		$model = Factory::createClass('LibGw');
 		var_dump($model);
 		$model->checkField("20111003632", "yin543211");
-		var_dump($model->getHistoryList());
+// 		var_dump($model->getHistoryList());
 	}
 	
 	
