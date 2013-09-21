@@ -82,7 +82,8 @@ class UserAction extends Action{
 				);
 				$userModel->data($data)->add();
 			}
-			$returnData = $userModel->field(array('schoolId','studentNumber'))->find();
+			$returnData = $userModel->field(array('schoolId','studentNumber'))
+					->where(array('studentNumber'=>$studentNumber, 'schoolId'=>$schoolId))->find();
 			$this->ajaxReturn(array('User'=>$returnData), '登陆成功', 1);
 		}else{
 			$this->ajaxReturn('', '用户名或密码错误', 0);
