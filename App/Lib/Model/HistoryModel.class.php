@@ -9,22 +9,22 @@ class HistoryModel extends CommonModel{
 			$url = $list['url'][$i];
 			$author = $list['author'][$i];
 			$title = $list['title'][$i];
-			$publishYear = $list['publishYear'][$i];
-			$limitTime = $list['limitDate'][$i].' '.$list['limitTime'][$i];
-			$returnTime = $list['returnDate'][$i].' '.$list['returnTime'][$i];
-			$payment = $list['payment'][$i];
-			$location = $list['location'][$i];
+// 			$publishYear = $list['publishYear'][$i];
+// 			$limitTime = $list['limitDate'][$i].' '.$list['limitTime'][$i];
+// 			$returnTime = $list['returnDate'][$i].' '.$list['returnTime'][$i];
+// 			$payment = $list['payment'][$i];
+// 			$location = $list['location'][$i];
 			$data = array(
 					'studentNumber' => $studentNumber,
 					'schoolId' => $schoolId,
 					'author' => $author,
 					'title' => $title,
 					'url' => $url,
-					'publishYear' => $publishYear,
-					'limitTime' => $limitTime,
-					'returnTime' => $returnTime,
-					'payment' => trim($payment),
-					'location' => $location
+// 					'publishYear' => $publishYear,
+// 					'limitTime' => $limitTime,
+// 					'returnTime' => $returnTime,
+// 					'payment' => trim($payment),
+// 					'location' => $location
 			);
 			
 			if(!$this->data($data)->add()){

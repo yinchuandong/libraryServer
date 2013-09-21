@@ -15,11 +15,11 @@ class LoanModel extends CommonModel{
 			$url = $list['url'][$i];
 			$author = $list['author'][$i];
 			$title = $list['title'][$i];
-			$publishYear = $list['publishYear'][$i];
+// 			$publishYear = $list['publishYear'][$i];
 			$returnDate = $list['returnDate'][$i];
-			$callNumber = $list['callNumber'][$i];
-			$payment = $list['payment'][$i];
-			$location = $list['location'][$i];
+// 			$callNumber = $list['callNumber'][$i];
+// 			$payment = $list['payment'][$i];
+// 			$location = $list['location'][$i];
 			$data = array(
 					'id' => $id,
 					'studentNumber' => $studentNumber,
@@ -27,11 +27,11 @@ class LoanModel extends CommonModel{
 					'author' => $author,
 					'title' => $title,
 					'url' => $url,
-					'publishYear' => $publishYear,
-					'callNumber' => $callNumber,
+// 					'publishYear' => $publishYear,
+// 					'callNumber' => $callNumber,
 					'returnDate' => $returnDate,
-					'payment' => trim($payment),
-					'location' => $location
+// 					'payment' => trim($payment),
+// 					'location' => $location
 			);
 			
 // 			var_dump($data);

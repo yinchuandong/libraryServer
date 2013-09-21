@@ -57,7 +57,7 @@ class UserAction extends Action{
 	 * @param int 
 	 * @return json{data:"", info:"", status: 1/0}
 	 */
-	public function login2(){
+	public function login(){
 		$studentNumber = $_REQUEST['studentNumber'];
 		$password = $_REQUEST['password'];
 		$schoolName = $_REQUEST['schoolName'];
@@ -82,14 +82,15 @@ class UserAction extends Action{
 				);
 				$userModel->data($data)->add();
 			}
-			$this->ajaxReturn('', '登陆成功', 1);
+			$returnData = $userModel->field(array('schoolId','studentNumber'))->find();
+			$this->ajaxReturn(array('User'=>$returnData), '登陆成功', 1);
 		}else{
 			$this->ajaxReturn('', '用户名或密码错误', 0);
 		}
 	}
 	
 	
-	public function login(){
+	public function login2(){
 		$userModel = new UserModel();
 		$studentNumber = $_REQUEST['studentNumber'];
 		$password = $_REQUEST['password'];

@@ -30,7 +30,9 @@ class LoanAction extends Action{
 		$list = $library->getLoanList();
 		
 		$loanModel->addLoanList($studentNumber, $schoolId, $list);
-		$returnList = $loanModel->where(array('studentNumber'=>$studentNumber, 'schoolId'=>$schoolId))->select();
+		$returnList = $loanModel->
+				field(array('schoolId','studentNumber','id','title','author','url','returnDate'))->
+				where(array('studentNumber'=>$studentNumber, 'schoolId'=>$schoolId))->select();
 		$returnData = array(
 // 				'num' => $num,
 				'Loan' => $returnList
@@ -67,7 +69,9 @@ class LoanAction extends Action{
 		
 		
 		$historyModel->addHistoryList($studentNumber, $schoolId, $list);
-		$returnList = $historyModel->where(array('studentNumber'=>$studentNumber, 'schoolId'=>$schoolId))->select();
+		$returnList = $historyModel->
+				field(array('studentNumber', 'schoolId', 'title', 'author', 'url'))->
+				where(array('studentNumber'=>$studentNumber, 'schoolId'=>$schoolId))->select();
 		$returnData = array(
 // 				'num' => $num,
 				'History' => $returnList //这里的键名是客户端的Model
