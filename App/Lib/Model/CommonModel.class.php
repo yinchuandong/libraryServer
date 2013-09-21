@@ -15,4 +15,10 @@ class CommonModel extends Model{
 		$className = D('School')->field('fileName')->where(array('id'=>$schoolId))->find();
 		return $className['fileName'];
 	}
+	
+	public function getSchoolIdByName($schoolName){
+		$id = D('School')->where(array('schoolName'=>$schoolName))->find();
+		return $id;
+	}
+	
 }

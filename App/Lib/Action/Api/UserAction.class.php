@@ -60,22 +60,29 @@ class UserAction extends Action{
 	public function login2(){
 		$studentNumber = $_REQUEST['studentNumber'];
 		$password = $_REQUEST['password'];
-		$schoolId = $_REQUEST['schoolId'];
-		if(empty($studentNumber) || empty($password) || empty($schoolId)){
+		$schoolName = $_REQUEST['schoolName'];
+		if(empty($studentNumber) || empty($password) || empty($schoolName)){
 			$this->ajaxReturn('', '数据不合法', 0);
 		}
-		vendor("Gw.Library");
-		$library = new Library();
-		$requestUrl = "http://lib.gdufs.edu.cn/uindex.php";
-		$formUrl = 'http://lib.gdufs.edu.cn/bor.php';
+		$userModel = new UserModel();
+		$school = D('School')->where(array('schoolName'=>$schoolName))->find();
+		$schoolId = $school['id'];
+		$className = $school['fileName'];
+		if (empty($schoolId)){
+			$this->ajaxReturn('','该学校不存在',0);
+		}
+		vendor("Gw.Factory");
 		
-		$field = array(
-			'userid' => $studentNumber,
-			'userpwd' => $password,
-		);
-		
-		if($library->checkField($field, $formUrl)){
-			$this->ajaxReturn('', '', 1);
+		$library = Factory::createClass($className);
+		if($library->checkField($studentNumber, $password)){
+			if (!$userModel->isExsitUser($studentNumber, $schoolId)){//如果用户名不存在
+				$data = array(
+						'schoolId' => $schoolId,
+						'studentNumber' => $studentNumber,
+				);
+				$userModel->data($data)->add();
+			}
+			$this->ajaxReturn('', '登陆成功', 1);
 		}else{
 			$this->ajaxReturn('', '用户名或密码错误', 0);
 		}
