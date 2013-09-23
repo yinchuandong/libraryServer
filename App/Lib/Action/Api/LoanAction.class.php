@@ -70,7 +70,7 @@ class LoanAction extends Action{
 		
 		$historyModel->addHistoryList($studentNumber, $schoolId, $list);
 		$returnList = $historyModel->
-				field(array('studentNumber', 'schoolId', 'title', 'author', 'url'))->
+				field(array('id','studentNumber', 'schoolId', 'title', 'author', 'url'))->
 				where(array('studentNumber'=>$studentNumber, 'schoolId'=>$schoolId))->select();
 		$returnData = array(
 // 				'num' => $num,
