@@ -18,19 +18,21 @@ class LoanAction extends Action{
 		}
 		
 		
-		vendor("Gw.Library");
-		$library = new Library();
+		vendor("Gw.Factory");
+		$loanModel = new LoanModel();
+		$className = $loanModel->getSchoolClassById($schoolId);
+		$library = Factory::createClass($className);
+		
 		if(!$library->checkField($studentNumber, $password)){
 			$this->ajaxReturn('', '用户名或密码错误', 0);
 		}
-		$uriList = $library->getFinalUrl();
-		$url = $uriList['url'][0];
-		$num = $uriList['num'][0];
 		
-		$list = $library->getLoanList($url);
-		$loanModel = new LoanModel();
+		$list = $library->getLoanList();
+		
 		$loanModel->addLoanList($studentNumber, $schoolId, $list);
-		$returnList = $loanModel->where(array('studentNumber'=>$studentNumber, 'schoolId'=>$schoolId))->select();
+		$returnList = $loanModel->
+				field(array('schoolId','studentNumber','id','title','author','url','returnDate'))->
+				where(array('studentNumber'=>$studentNumber, 'schoolId'=>$schoolId))->select();
 		$returnData = array(
 // 				'num' => $num,
 				'Loan' => $returnList
@@ -54,27 +56,22 @@ class LoanAction extends Action{
 			$this->ajaxReturn('', '数据不合法', 0);
 		}
 	
-		$field = array(
-			'userid' => $studentNumber,
-			'userpwd' => $password,
-		);
+		vendor("Gw.Factory");
+		$historyModel = new HistoryModel();
+		$className = $historyModel->getSchoolClassById($schoolId);
+		$library = Factory::createClass($className);
 		
-		vendor("Gw.Library");
-		$library = new Library();
-		
-	
 		if(!$library->checkField($studentNumber, $password)){
 			$this->ajaxReturn('', '用户名或密码错误', 0);
 		}
-		$uriList = $library->getFinalUrl();
-		$url = $uriList['url'][1];
-		$num = $uriList['num'][1];
 	
-		$list = $library->getHistoryList($url);
+		$list = $library->getHistoryList();
 		
-		$historyModel = new HistoryModel();
+		
 		$historyModel->addHistoryList($studentNumber, $schoolId, $list);
-		$returnList = $historyModel->where(array('studentNumber'=>$studentNumber, 'schoolId'=>$schoolId))->select();
+		$returnList = $historyModel->
+				field(array('id','studentNumber', 'schoolId', 'title', 'author', 'url'))->
+				where(array('studentNumber'=>$studentNumber, 'schoolId'=>$schoolId))->select();
 		$returnData = array(
 // 				'num' => $num,
 				'History' => $returnList //这里的键名是客户端的Model
@@ -97,9 +94,9 @@ class LoanAction extends Action{
 		$password = $_REQUEST['password'];
 		$schoolId = $_REQUEST['schoolId'];
 		$books = $_REQUEST['books'];
-// 		if(empty($studentNumber) || empty($password) || empty($schoolId) || empty($books)){
-// 			$this->ajaxReturn('', '数据不合法', 0);
-// 		}
+		if(empty($studentNumber) || empty($password) || empty($schoolId) || empty($books)){
+			$this->ajaxReturn('', '数据不合法', 0);
+		}
 		
 		$bookArr = explode('|', $books);
 		$bookquery = '';
@@ -107,22 +104,16 @@ class LoanAction extends Action{
 			$bookquery .= '&'.$id.'=Y';
 		}
 		
-		vendor("Gw.Library");
-		$library = new Library();
-		
-		$field = array(
-				'userid'=>'20111003632',
-				'userpwd'=>'yin543211',
-		);
+		vendor("Gw.Factory");
+		$loanModel = new LoanModel();
+		$className = $loanModel->getSchoolClassById($schoolId);
+		$library = Factory::createClass($className);
 		
 		if(!$library->checkField($studentNumber, $password)){
 			$this->ajaxReturn('', '用户名或密码错误', 0);
 		}
-		$uriList = $library->getFinalUrl();
-		$renewUrl = $library->getRenewUrl($uriList['url'][0]);
-		
-		$renewApartUrl = $renewUrl['renewApart'].$bookquery;
-		$library->saveContent($renewApartUrl);
+		$info = $library->renew($books);
+		$this->ajaxReturn("", $info, 1);
 // 		$content = $library->getContent();
 // 		var_dump($content);
 		
@@ -130,7 +121,13 @@ class LoanAction extends Action{
 	
 	
 	
-	
+	public function test(){
+		vendor("Gw.Factory");
+		$model = Factory::createClass('LibGw');
+		var_dump($model->checkField("20111003632", "yin543211"));
+		
+		var_dump($model->getLoanList());
+	}
 	
 	
 	
