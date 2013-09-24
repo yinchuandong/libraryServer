@@ -5,30 +5,23 @@ class HistoryModel extends CommonModel{
 // 		$this->where(array('studentNumber'=>$studentNumber, 'schoolId'=>$schoolId))->delete();
 		
 		$len = count($list['url']);
+		
 		for($i = 0; $i<$len; $i++){
+			$order = trim($list['order'][$i]);
 			$url = $list['url'][$i];
 			$author = $list['author'][$i];
 			$title = $list['title'][$i];
-			
-			if ($this->isExsit($schoolId, $studentNumber, $title, $author)){
+			if ($this->isExsit($schoolId, $studentNumber, $title, $author, $order)){
 				continue;
 			}
-// 			$publishYear = $list['publishYear'][$i];
-// 			$limitTime = $list['limitDate'][$i].' '.$list['limitTime'][$i];
-// 			$returnTime = $list['returnDate'][$i].' '.$list['returnTime'][$i];
-// 			$payment = $list['payment'][$i];
-// 			$location = $list['location'][$i];
+			
 			$data = array(
+					'order'=>$order,
 					'studentNumber' => $studentNumber,
 					'schoolId' => $schoolId,
 					'author' => $author,
 					'title' => $title,
 					'url' => $url,
-// 					'publishYear' => $publishYear,
-// 					'limitTime' => $limitTime,
-// 					'returnTime' => $returnTime,
-// 					'payment' => trim($payment),
-// 					'location' => $location
 			);
 			
 			if(!$this->data($data)->add()){
@@ -46,12 +39,13 @@ class HistoryModel extends CommonModel{
 	 * @param String $author
 	 * @return boolean
 	 */
-	public function isExsit($schoolId, $studentNumber, $title, $author){
+	public function isExsit($schoolId, $studentNumber, $title, $author, $order){
 		$where = array(
 			'schoolId' => $schoolId,
 			'studentNumber' => $studentNumber,
 			'title' => $title,
-			'author' => $author		
+			'author' => $author,
+			'order' => $order	
 		);
 		
 		if ($this->where($where)->count()>=1){

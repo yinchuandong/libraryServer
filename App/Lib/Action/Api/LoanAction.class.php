@@ -1,6 +1,6 @@
 <?php 
 
-class LoanAction extends Action{
+class LoanAction extends CommonAction{
 	
 	/**
 	 * 获得借阅列表
@@ -132,7 +132,45 @@ class LoanAction extends Action{
 	
 	
 	
+	public function getHistoryList2(){
 	
+		$studentNumber = $_REQUEST['studentNumber'];
+		$password = $_REQUEST['password'];
+		$schoolId = $_REQUEST['schoolId'];
+		if(empty($studentNumber) || empty($password) || empty($schoolId)){
+			$this->ajaxReturn('', '数据不合法', 0);
+		}
+	
+		vendor("Gw.Factory");
+		$historyModel = new HistoryModel();
+		$className = $historyModel->getSchoolClassById($schoolId);
+		$library = Factory::createClass($className);
+	
+		if(!$library->checkField($studentNumber, $password)){
+			$this->ajaxReturn('', '用户名或密码错误', 0);
+		}
+	
+		$list = $library->getHistoryList();
+	
+		import("ORG.Util.Page");
+		$totalNums = $historyModel->
+			where(array('studentNumber'=>$studentNumber, 'schoolId'=>$schoolId))->count();
+		$page = new Page($totalNums, 4);
+		
+		$historyModel->addHistoryList($studentNumber, $schoolId, $list);
+		
+		$returnList = $historyModel->
+		field(array('id','studentNumber', 'schoolId', 'title', 'author', 'url'))->
+		where(array('studentNumber'=>$studentNumber, 'schoolId'=>$schoolId))->
+		order('id desc')->limit($page->firstRow.','.$page->listRows)->
+		select();
+		
+		$returnData = array(
+				'Page' => array('nowPage'=>$page->nowPage,'totalPages'=>$page->totalPages),
+				'History' => $returnList //这里的键名是客户端的Model
+		);
+		$this->ajaxReturn($returnData , '请求成功', 1);
+	}
 	
 	
 	

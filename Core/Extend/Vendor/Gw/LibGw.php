@@ -108,16 +108,18 @@ class LibGw extends LibBase{
 		$content = $this->escapeNote($content);
 		$pattern = $this->getHistoryListRegular();
 		if(preg_match_all($pattern, $content, $matches)){
-			$result['url'] = $matches[5];
-			$result['author'] = $matches[6];
-			$result['title'] = $matches[10];
-			$result['publishYear'] = $matches[13];
-			$result['limitDate'] = $matches[16];
-			$result['limitTime'] = $matches[19];
-			$result['returnDate'] = $matches[22];
-			$result['returnTime'] = $matches[25];
-			$result['payment'] = $matches[28];
-			$result['location'] = $matches[31];
+// 			var_dump($matches[3]);die;
+			$result['order']= $matches[3];
+			$result['url'] = $matches[6];
+			$result['author'] = $matches[7];
+			$result['title'] = $matches[11];
+			$result['publishYear'] = $matches[14];
+			$result['limitDate'] = $matches[17];
+			$result['limitTime'] = $matches[20];
+			$result['returnDate'] = $matches[23];
+			$result['returnTime'] = $matches[26];
+			$result['payment'] = $matches[29];
+			$result['location'] = $matches[32];
 			return $result;
 		}else{
 			echo 'getHistoryList_false';
@@ -159,8 +161,8 @@ class LibGw extends LibBase{
 		$content = $this->getContent();
 		$pattern = $this->getRenewRegular();
 		if (preg_match('/<div class=title>(.|\n)*<\/div>/i', $content, $match)){
-			$result = explode("-", strip_tags(trim($match[0])));
-			$result = preg_replace("/(\:|\n)/i", "", $result[1]);
+			$result = explode("-", trim($match[0]));
+			$result = preg_replace("/\:/i", "", $result[1]);
 			return $result;
 		}else{
 			echo 1;
@@ -313,7 +315,7 @@ class LibGw extends LibBase{
 	private function getHistoryListRegular(){
 		$regular = '';
 		//获得第一个通配符
-		$regular .= '<td class=td1 id=centered(.*)>(.)*<\/td>(.|\n)*?';
+		$regular .= '<td class=td1 id=centered(.*)\><A href=(.*)>(.*)<\/A><\/td>(.|\n)*?';
 		//获取作者
 		$regular .= '<td class=td1(.)*><a href="(.*)" target=_blank>(.*)<\/a><\/td>(.|\n)*?';
 		//标题
