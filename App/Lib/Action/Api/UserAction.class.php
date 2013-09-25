@@ -137,7 +137,11 @@ class UserAction extends Action{
 	}
 	
 	
-	
+	function test(){
+		$model = new HistoryModel();
+		$isExsit = $model->isExsit(1, '20111003632', 'PHP Web 2.0开发实战', '泽瓦斯');
+		var_dump($isExsit);
+	}
 	
 	
 	
