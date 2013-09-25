@@ -169,7 +169,7 @@ class LoanAction extends CommonAction{
 					'schoolId' => $schoolId,
 					'title' => $title
 			);
-			var_dump($info);echo '<br/>';
+// 			var_dump($info);echo '<br/>';
 			$model->where($where)->data($data)->save();
 		}
 		$this->ajaxReturn('','',1);

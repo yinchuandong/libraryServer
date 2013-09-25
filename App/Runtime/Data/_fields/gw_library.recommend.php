@@ -1,0 +1,1 @@
+{"0":"bookId","1":"studentNumber","2":"schoolId","3":"recommendTime","_autoinc":false,"_pk":"schoolId","_type":{"bookId":"int(11)","studentNumber":"char(20)","schoolId":"int(11)","recommendTime":"datetime"}}
