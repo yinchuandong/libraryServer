@@ -11,7 +11,17 @@ class HistoryModel extends CommonModel{
 			$author = $list['author'][$i];
 			$title = $list['title'][$i];
 			if ($this->isExsit($schoolId, $studentNumber, $title, $author)){
-				$this->updateOrder($schoolId, $studentNumber, $title, $author, $order);
+				$where = array(
+						'schoolId' => $schoolId,
+						'studentNumber' => $studentNumber,
+						'title' => $title,
+						'author' => $author,
+				);
+				$newData = array(
+						'ordered' => $order,
+						'url' => $url		
+				);
+				$this->where($where)->data($newData)->save();
 				continue;
 			}
 			
