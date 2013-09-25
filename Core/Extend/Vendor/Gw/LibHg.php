@@ -122,7 +122,9 @@ class LibHg extends LibBase{
 	}
 	
 	public function getLoanList(){
-		echo 'hg-->getLoanList';
+// 		echo 'hg-->getLoanList';
+
+		return null;
 	}
 	
 	public function getContent(){
@@ -134,7 +136,7 @@ class LibHg extends LibBase{
 	}
 	
 	public function renew($bookId){
-		
+		return null;
 	}
 	
 /**

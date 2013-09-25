@@ -122,7 +122,7 @@ class LibGw extends LibBase{
 			$result['location'] = $matches[32];
 			return $result;
 		}else{
-			echo 'getHistoryList_false';
+// 			echo 'getHistoryList_false';
 			return null;
 		}
 	}
@@ -146,7 +146,7 @@ class LibGw extends LibBase{
 			$result['callNumber'] = $matches[27];
 			return $result;
 		}else{
-			echo 'gw-->getLoanList';
+// 			echo 'gw-->getLoanList';
 			return null;
 		}
 	}

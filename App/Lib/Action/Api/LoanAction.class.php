@@ -140,6 +140,41 @@ class LoanAction extends CommonAction{
 		var_dump($model->getLoanList());
 	}
 	
+	/**
+	 * 更新用户借阅历史的isbn
+	 */
+	public function updateIsbn(){
+		$studentNumber = $_REQUEST['studentNumber'];
+		$schoolId = $_REQUEST['schoolId'];
+		if (empty($studentNumber) || empty($schoolId)){
+			$this->ajaxReturn('','数据不合发',0);
+		}
+		vendor("IsbnHelper.IsbnHelper");
+		$helper = new IsbnHelper();
+		$where = array(
+			'studentNumber' => $studentNumber,
+			'schoolId' => $schoolId		
+		);
+		$model = new HistoryModel();
+		$bookList = $model->where($where)->select();
+		foreach ($bookList as $book){
+			$title = $book['title'];
+			$info = $helper->getBookInfo($title);
+			$data = array(
+				'isbn' => $info['isbn'],
+				'callNumber' => $info['callNumber']	
+			);
+			$where = array(
+					'studentNumber' => $studentNumber,
+					'schoolId' => $schoolId,
+					'title' => $title
+			);
+			var_dump($info);echo '<br/>';
+			$model->where($where)->data($data)->save();
+		}
+		$this->ajaxReturn('','',1);
+		
+	}
 	
 	
 	
