@@ -110,6 +110,7 @@ class LibHg extends LibBase{
 				$matches[4][$i] = $this->baseUrl.$matches[4][$i];
 			}
 			$result = array(
+				'order'=>$matches[1],
 				'url'=>$matches[4],
 				'title'=>$matches[5],
 				'author'=>$matches[6]
@@ -121,7 +122,9 @@ class LibHg extends LibBase{
 	}
 	
 	public function getLoanList(){
-		echo 'hg-->getLoanList';
+// 		echo 'hg-->getLoanList';
+
+		return null;
 	}
 	
 	public function getContent(){
@@ -133,7 +136,7 @@ class LibHg extends LibBase{
 	}
 	
 	public function renew($bookId){
-		
+		return null;
 	}
 	
 /**

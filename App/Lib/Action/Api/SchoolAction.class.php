@@ -13,7 +13,7 @@ class SchoolAction extends CommonAction{
 	/**
 	 * 得到学校名称的列表
 	 */
-	function getSchoolList(){
+	public function getSchoolList(){
 		$model = D('School');
 		if (($data = $model->field("schoolName")->select())!=false){
 			$this->ajaxReturn(array('School'=>$data),'',1);

@@ -1,6 +1,6 @@
 <?php 
 
-class LoanAction extends Action{
+class LoanAction extends CommonAction{
 	
 	/**
 	 * 获得借阅列表
@@ -42,13 +42,15 @@ class LoanAction extends Action{
 	}
 	
 	/**
-	 * 获得历史记录
-	 * @param studentNumber
-	 * @param string password
-	 * @param int schoolId
+	 * 借阅历史列表,通过get或者post传入参数
+	 * @param String schoolId 			(学校的id)必填
+	 * @param String studentNumber		(学号或者借书号)必填
+	 * @param Stirng password			(密码)必填
+	 * @param String p					(当前的页码)可选，默认为1
+	 * @param String listRows			(每页显示的数目)可选，默认为4
 	 */
 	public function getHistoryList(){
-		
+	
 		$studentNumber = $_REQUEST['studentNumber'];
 		$password = $_REQUEST['password'];
 		$schoolId = $_REQUEST['schoolId'];
@@ -60,24 +62,33 @@ class LoanAction extends Action{
 		$historyModel = new HistoryModel();
 		$className = $historyModel->getSchoolClassById($schoolId);
 		$library = Factory::createClass($className);
-		
+	
 		if(!$library->checkField($studentNumber, $password)){
 			$this->ajaxReturn('', '用户名或密码错误', 0);
 		}
 	
 		$list = $library->getHistoryList();
-		
+	
+		//数据分页
+		import("ORG.Util.Page");
+		$totalNums = $historyModel->
+			where(array('studentNumber'=>$studentNumber, 'schoolId'=>$schoolId))->count();
+		$listRows = empty($_REQUEST['listRows']) ? 4 : $_REQUEST['listRows'];
+		$page = new Page($totalNums, $listRows);
 		
 		$historyModel->addHistoryList($studentNumber, $schoolId, $list);
+		
 		$returnList = $historyModel->
-				field(array('studentNumber', 'schoolId', 'title', 'author', 'url'))->
-				where(array('studentNumber'=>$studentNumber, 'schoolId'=>$schoolId))->select();
+		field(array('id','studentNumber', 'schoolId', 'title', 'author', 'url'))->
+		where(array('studentNumber'=>$studentNumber, 'schoolId'=>$schoolId))->
+		order('ordered asc')->
+		limit($page->firstRow.','.$page->listRows)->select();
 		$returnData = array(
-// 				'num' => $num,
 				'History' => $returnList //这里的键名是客户端的Model
 		);
 		$this->ajaxReturn($returnData , '请求成功', 1);
 	}
+	
 	
 	//==============================================
 	/**
@@ -129,8 +140,41 @@ class LoanAction extends Action{
 		var_dump($model->getLoanList());
 	}
 	
-	
-	
+	/**
+	 * 更新用户借阅历史的isbn
+	 */
+	public function updateIsbn(){
+		$studentNumber = $_REQUEST['studentNumber'];
+		$schoolId = $_REQUEST['schoolId'];
+		if (empty($studentNumber) || empty($schoolId)){
+			$this->ajaxReturn('','数据不合发',0);
+		}
+		vendor("IsbnHelper.IsbnHelper");
+		$helper = new IsbnHelper();
+		$where = array(
+			'studentNumber' => $studentNumber,
+			'schoolId' => $schoolId		
+		);
+		$model = new HistoryModel();
+		$bookList = $model->where($where)->select();
+		foreach ($bookList as $book){
+			$title = $book['title'];
+			$info = $helper->getBookInfo($title);
+			$data = array(
+				'isbn' => $info['isbn'],
+				'callNumber' => $info['callNumber']	
+			);
+			$where = array(
+					'studentNumber' => $studentNumber,
+					'schoolId' => $schoolId,
+					'title' => $title
+			);
+// 			var_dump($info);echo '<br/>';
+			$model->where($where)->data($data)->save();
+		}
+		$this->ajaxReturn('','',1);
+		
+	}
 	
 	
 	
