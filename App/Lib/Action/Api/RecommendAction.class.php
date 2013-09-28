@@ -49,4 +49,18 @@ class RecommendAction extends CommonAction{
 		
 	} 
 	
+	public function getCoverInfo(){
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
