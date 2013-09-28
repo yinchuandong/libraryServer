@@ -48,6 +48,50 @@ class RecommendAction extends CommonAction{
 		}
 		
 	} 
+
+	public function getUsers(){
+		$model = D('User');
+		$result = $model->getUsers();
+		return $result;
+	}
+
+	public function getUserHistory($studentNumber){
+		$model = D('History');
+		$result = $model->getUserHistory($studentNumber);
+		return $result;
+	}
+
+	public function getAllHistory(){
+		$model = D('History');
+		$result = $model->getAllHistory();
+		return $result;
+	}
+
+	
+	function getRecommendation(){
+		import('@.ORG.library');
+		$users = $this->getUsers();
+		$histories = $this->getAllHistory();
+		for ($i=0; $i < count($users); $i++) {
+			$re = new Recommendate();
+			echo '<br>'.$i.' :'.$users[$i]['studentNumber'].'<br>';
+			$result = $this->getUserHistory($users[$i]['studentNumber']);
+			$re->setPreference($result);
+			$re->setBooks($histories);
+			$result = $re->recommendateBook();
+			$this->updateRecommend($users[$i]['studentNumber'],$result);
+		}
+	}
+
+	function updateRecommend($studentNumber,$recommend){
+		$model = D('Recommend');
+		$result = $model->existUser($studentNumber);
+		if($result){
+			$model->saveRecommend($studentNumber,$recommend);
+		}else{
+			$model->addRecommend($studentNumber,$recommend);
+		}
+	}
 	
 	public function getCoverInfo(){
 		
