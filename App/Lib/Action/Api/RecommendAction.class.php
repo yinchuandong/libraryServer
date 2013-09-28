@@ -93,8 +93,26 @@ class RecommendAction extends CommonAction{
 		}
 	}
 	
-	public function getCoverInfo(){
-		
+	public function getCover(){
+		$model = D('Book');
+		vendor('IsbnHelper.CoverHelper');
+		$helper = new CoverHelper();
+		$list = $model->field(array('isbn'))->where('cover is null')->select();
+		foreach ($list as $row){
+			
+			$isbn = str_replace("-", "", $row['isbn']);
+			$info = $helper->getBookByIsbn($isbn);
+			$where = array(
+					'isbn'=>$row['isbn']		
+			);
+			$data = array(
+					'cover'=>$info['cover'],
+					'url'=>$info['url']	
+			);
+// 			var_dump($data);
+			$model->where($where)->data($data)->save();
+		}
+// 		var_dump($list);
 	}
 	
 	
