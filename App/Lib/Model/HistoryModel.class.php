@@ -73,6 +73,15 @@ class HistoryModel extends CommonModel{
 		);
 		$this->where($where)->data(array('ordered'=>$order))->save();
 	}
+
+	public function getUserHistory($studentNumber){
+		$where = array('studentNumber' => $studentNumber);
+		return $this->where($where)->field('studentNumber,isbn,callNumber')->select();
+	}
+
+	public function getAllHistory(){
+		return $this->field('studentNumber,isbn,callNumber')->select();
+	}
 	
 	
 	
