@@ -27,7 +27,7 @@ class LoanAction extends CommonAction{
 			$this->ajaxReturn('', '用户名或密码错误', 0);
 		}
 		
-// 		$list = $library->getLoanList();
+		$list = $library->getLoanList();
 		
 // 		$loanModel->addLoanList($studentNumber, $schoolId, $list);
 		$returnList = $loanModel->
