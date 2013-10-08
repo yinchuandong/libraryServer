@@ -102,7 +102,7 @@ class LibGw extends LibBase{
 	
 	public function getHistoryList(){
 		$urilist = $this->getFinalUrl();
-		$url = $urilist['url'][1]; 
+		$url = $urilist['url'][1];
 		$this->saveContent($url);
 		$content = $this->getContent();
 		$content = $this->escapeNote($content);
@@ -122,7 +122,6 @@ class LibGw extends LibBase{
 			$result['location'] = $matches[32];
 			return $result;
 		}else{
-// 			echo 'getHistoryList_false';
 			return null;
 		}
 	}
@@ -146,7 +145,6 @@ class LibGw extends LibBase{
 			$result['callNumber'] = $matches[27];
 			return $result;
 		}else{
-// 			echo 'gw-->getLoanList';
 			return null;
 		}
 	}
