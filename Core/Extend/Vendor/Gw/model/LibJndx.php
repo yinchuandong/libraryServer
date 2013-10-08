@@ -218,7 +218,7 @@ class LibJndx extends LibBase{
 			for ($i=0; $i<$len; $i++){
 				$matches[6][$i] = $matches[4][$i].'-'.$matches[6][$i];
 				$matches[8][$i] = $this->baseUrl.$matches[8][$i];
-				$matches[15][$i] = '20'.$matches[15][$i];
+				$matches[17][$i] = '20'.str_replace('-', '', $matches[17][$i]);
 			}
 			$result = array(
 				'id'=>$matches[6],
