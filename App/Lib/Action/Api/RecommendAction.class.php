@@ -64,6 +64,7 @@ class RecommendAction extends CommonAction{
 	public function getAllHistory(){
 		$model = D('History');
 		$result = $model->getAllHistory();
+		$model = new HistoryModel();
 		return $result;
 	}
 
