@@ -47,12 +47,6 @@ class RecommendAction extends CommonAction{
 			$this->ajaxReturn('', '服务器无响应', 0);
 		}
 		
-	} 
-
-	public function getUsers(){
-		$model = D('User');
-		$result = $model->getUsers();
-		return $result;
 	}
 
 	public function getUserHistory($studentNumber){
@@ -71,27 +65,24 @@ class RecommendAction extends CommonAction{
 	
 	function getRecommendation(){
 		import('@.ORG.library');
-		$users = $this->getUsers();
-		$histories = $this->getAllHistory();
-		for ($i=0; $i < count($users); $i++) {
+		if($_REQUEST){
+			$studentNumber = $this->_request("studentNumber");
+			$schoolId = $this->_request("schoolId");
+			$histories = $this->getAllHistory();
 			$re = new Recommendate();
-			echo '<br>'.$i.' :'.$users[$i]['studentNumber'].'<br>';
-			$result = $this->getUserHistory($users[$i]['studentNumber']);
+			$result = $this->getUserHistory($studentNumber);
 			$re->setPreference($result);
 			$re->setBooks($histories);
 			$result = $re->recommendateBook();
-			$this->updateRecommend($users[$i]['studentNumber'],$result);
+			$this->updateRecommend($studentNumber,$result,$schoolId);
 		}
+		
+		
 	}
 
-	function updateRecommend($studentNumber,$recommend){
+	function updateRecommend($studentNumber,$recommend,$schoolId){
 		$model = D('Recommend');
-		$result = $model->existUser($studentNumber);
-		if($result){
-			$model->saveRecommend($studentNumber,$recommend);
-		}else{
-			$model->addRecommend($studentNumber,$recommend);
-		}
+		$model->addRecommend($studentNumber,$recommend,$schoolId);
 	}
 	
 	public function getCover(){
