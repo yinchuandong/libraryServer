@@ -20,11 +20,16 @@ class RecommendModel extends CommonModel{
 	
 
 	public function addRecommend($studentNumber,$re,$schoolId=1){
-		$data['recommendisbn'] = implode(':', $re);
-		$data['studentNumber']=$studentNumber;
-		$data['recommendTime']=time();
-		$data['schoolId'] = $schoolId;
-		$this->data($data)->add();
+		echo count($re);
+		for ($i=count($re); $i < count($re); $i--) { 
+			$data['recommendisbn'] = $re[$i];
+			$data['studentNumber']=$studentNumber;
+			$data['schoolId'] = $schoolId;
+			$this->data($data)->add();
+			echo $re[$i];
+		}
+		
+		
 	}
 	
 	
