@@ -25,7 +25,7 @@ class RecommendModel extends CommonModel{
 			$data['studentNumber']=$studentNumber;
 			$data['schoolId'] = $schoolId;
 			$this->data($data)->add();
-			echo $re[$i];
+// 			echo $re[$i];
 		}
 		
 		

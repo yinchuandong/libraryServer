@@ -4,7 +4,10 @@ class BookModel extends CommonModel{
 		parent::__construct();
 	}
 	
-	
+	/**
+	 * 把历史列表里的书存入书库
+	 * @param string $hList
+	 */
 	function addItems($hList){
 		foreach ($hList as $item){
 			if ($this->where(array('isbn' => $item['isbn']))->count() < 1){
@@ -18,6 +21,34 @@ class BookModel extends CommonModel{
 			}
 		}
 		
+	}
+	
+	
+	/**
+	 * 更新书库的cover ,url, publisher等信息
+	 */
+	function updateBookInfo(){
+		$model = D('Book');
+		vendor('IsbnHelper.CoverHelper');
+		$helper = new CoverHelper();
+		$list = $model->field(array('isbn','title'))->where('cover is null')->select();
+		foreach ($list as $row){
+				
+			$isbn = str_replace("-", "", $row['isbn']);
+			$info = $helper->getBookByIsbn($isbn);
+			if ($info == null){
+				$info = $helper->getBookByTitle($row['title']);
+			}
+			$where = array(
+					'isbn'=>$row['isbn']
+			);
+			$data = array(
+					'cover'=>$info['cover'],
+					'url'=>$info['url'],
+					'publisher'=>$info['publisher']
+			);
+			$model->where($where)->data($data)->save();
+		}
 	}
 	
 }

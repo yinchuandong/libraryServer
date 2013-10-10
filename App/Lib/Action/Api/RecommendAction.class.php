@@ -26,6 +26,9 @@ class RecommendAction extends CommonAction{
 			$this->ajaxReturn('', '用户名或密码错误', 0);
 		}
 		
+		//计算推荐的书
+		$this->calculateRecommend(); 
+		
 		//数据分页
 		import("ORG.Util.Page");
 		$model = new RecommendViewModel();
@@ -35,7 +38,7 @@ class RecommendAction extends CommonAction{
 		);
 		$totalNums = $model->where($where)->count();
 		
-		$listRows = empty($_REQUEST['listRows']) ? 4 : $_REQUEST['listRows'];
+		$listRows = empty($_REQUEST['listRows']) ? 10 : $_REQUEST['listRows'];
 		$page = new Page($totalNums, $listRows);
 		$data = $model->where($where)->order('recommendTime desc')->
 					limit($page->firstRow.','.$page->listRows)->select();
@@ -62,7 +65,7 @@ class RecommendAction extends CommonAction{
 	}
 
 	
-	function getRecommendation(){
+	function calculateRecommend(){
 		import('@.ORG.library');
 		if($_REQUEST){
 			$studentNumber = $this->_request("studentNumber");
