@@ -56,9 +56,8 @@ class RecommendAction extends CommonAction{
 	}
 
 	public function getAllHistory(){
-		$model = D('History');
-		$result = $model->getAllHistory();
 		$model = new HistoryModel();
+		$result = $model->getAllHistory();
 		return $result;
 	}
 
@@ -85,26 +84,31 @@ class RecommendAction extends CommonAction{
 		$model->addRecommend($studentNumber,$recommend,$schoolId);
 	}
 	
+	/**
+	 * 更新书库的封面和url等信息
+	 */
 	public function getCover(){
 		$model = D('Book');
 		vendor('IsbnHelper.CoverHelper');
 		$helper = new CoverHelper();
-		$list = $model->field(array('isbn'))->where('cover is null')->select();
+		$list = $model->field(array('isbn','title'))->where('cover is null')->select();
 		foreach ($list as $row){
 			
 			$isbn = str_replace("-", "", $row['isbn']);
 			$info = $helper->getBookByIsbn($isbn);
+			if ($info == null){
+				$info = $helper->getBookByTitle($row['title']);
+			}
 			$where = array(
 					'isbn'=>$row['isbn']		
 			);
 			$data = array(
 					'cover'=>$info['cover'],
-					'url'=>$info['url']	
+					'url'=>$info['url'],
+					'publisher'=>$info['publisher']
 			);
-// 			var_dump($data);
 			$model->where($where)->data($data)->save();
 		}
-// 		var_dump($list);
 	}
 	
 	

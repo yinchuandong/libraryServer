@@ -169,9 +169,12 @@ class LoanAction extends CommonAction{
 					'schoolId' => $schoolId,
 					'title' => $title
 			);
-// 			var_dump($info);echo '<br/>';
 			$model->where($where)->data($data)->save();
 		}
+		
+		$bookModel = new BookModel();
+		$bookModel->addItems($bookList);//把历史列表里的书存入书库
+		
 		$this->ajaxReturn('','',1);
 		
 	}

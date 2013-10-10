@@ -20,8 +20,7 @@ class RecommendModel extends CommonModel{
 	
 
 	public function addRecommend($studentNumber,$re,$schoolId=1){
-		echo count($re);
-		for ($i=count($re); $i < count($re); $i--) { 
+		for ($i=count($re); $i >= 0; $i--) { 
 			$data['recommendisbn'] = $re[$i];
 			$data['studentNumber']=$studentNumber;
 			$data['schoolId'] = $schoolId;
