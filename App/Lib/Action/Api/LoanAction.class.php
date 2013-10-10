@@ -28,8 +28,8 @@ class LoanAction extends CommonAction{
 		}
 		
 		$list = $library->getLoanList();
-		
 		$loanModel->addLoanList($studentNumber, $schoolId, $list);
+		
 		$returnList = $loanModel->
 				field(array('schoolId','studentNumber','id','title','author','url','returnDate'))->
 				where(array('studentNumber'=>$studentNumber, 'schoolId'=>$schoolId))->select();
@@ -66,8 +66,9 @@ class LoanAction extends CommonAction{
 		if(!$library->checkField($studentNumber, $password)){
 			$this->ajaxReturn('', '用户名或密码错误', 0);
 		}
-	
-		$list = $library->getHistoryList();
+		if (empty($_REQUEST['p'])){
+			$list = $library->getHistoryList();
+		}
 	
 		//数据分页
 		import("ORG.Util.Page");
