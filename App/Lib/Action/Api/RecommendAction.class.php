@@ -26,6 +26,9 @@ class RecommendAction extends CommonAction{
 			$this->ajaxReturn('', '用户名或密码错误', 0);
 		}
 		
+		//计算推荐的书
+		$this->calculateRecommend(); 
+		
 		//数据分页
 		import("ORG.Util.Page");
 		$model = new RecommendViewModel();
@@ -35,7 +38,7 @@ class RecommendAction extends CommonAction{
 		);
 		$totalNums = $model->where($where)->count();
 		
-		$listRows = empty($_REQUEST['listRows']) ? 4 : $_REQUEST['listRows'];
+		$listRows = empty($_REQUEST['listRows']) ? 10 : $_REQUEST['listRows'];
 		$page = new Page($totalNums, $listRows);
 		$data = $model->where($where)->order('recommendTime desc')->
 					limit($page->firstRow.','.$page->listRows)->select();
@@ -47,12 +50,6 @@ class RecommendAction extends CommonAction{
 			$this->ajaxReturn('', '服务器无响应', 0);
 		}
 		
-	} 
-
-	public function getUsers(){
-		$model = D('User');
-		$result = $model->getUsers();
-		return $result;
 	}
 
 	public function getUserHistory($studentNumber){
@@ -62,57 +59,59 @@ class RecommendAction extends CommonAction{
 	}
 
 	public function getAllHistory(){
-		$model = D('History');
+		$model = new HistoryModel();
 		$result = $model->getAllHistory();
 		return $result;
 	}
 
 	
-	function getRecommendation(){
+	function calculateRecommend(){
 		import('@.ORG.library');
-		$users = $this->getUsers();
-		$histories = $this->getAllHistory();
-		for ($i=0; $i < count($users); $i++) {
+		if($_REQUEST){
+			$studentNumber = $this->_request("studentNumber");
+			$schoolId = $this->_request("schoolId");
+			$histories = $this->getAllHistory();
 			$re = new Recommendate();
-			echo '<br>'.$i.' :'.$users[$i]['studentNumber'].'<br>';
-			$result = $this->getUserHistory($users[$i]['studentNumber']);
+			$result = $this->getUserHistory($studentNumber);
 			$re->setPreference($result);
 			$re->setBooks($histories);
 			$result = $re->recommendateBook();
-			$this->updateRecommend($users[$i]['studentNumber'],$result);
+			$this->updateRecommend($studentNumber,$result,$schoolId);
 		}
+		
+		
 	}
 
-	function updateRecommend($studentNumber,$recommend){
+	function updateRecommend($studentNumber,$recommend,$schoolId){
 		$model = D('Recommend');
-		$result = $model->existUser($studentNumber);
-		if($result){
-			$model->saveRecommend($studentNumber,$recommend);
-		}else{
-			$model->addRecommend($studentNumber,$recommend);
-		}
+		$model->addRecommend($studentNumber,$recommend,$schoolId);
 	}
 	
+	/**
+	 * 更新书库的封面和url等信息
+	 */
 	public function getCover(){
 		$model = D('Book');
 		vendor('IsbnHelper.CoverHelper');
 		$helper = new CoverHelper();
-		$list = $model->field(array('isbn'))->where('cover is null')->select();
+		$list = $model->field(array('isbn','title'))->where('cover is null')->select();
 		foreach ($list as $row){
 			
 			$isbn = str_replace("-", "", $row['isbn']);
 			$info = $helper->getBookByIsbn($isbn);
+			if ($info == null){
+				$info = $helper->getBookByTitle($row['title']);
+			}
 			$where = array(
 					'isbn'=>$row['isbn']		
 			);
 			$data = array(
 					'cover'=>$info['cover'],
-					'url'=>$info['url']	
+					'url'=>$info['url'],
+					'publisher'=>$info['publisher']
 			);
-// 			var_dump($data);
 			$model->where($where)->data($data)->save();
 		}
-// 		var_dump($list);
 	}
 	
 	
