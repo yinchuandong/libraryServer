@@ -13,7 +13,7 @@ class LoanModel extends CommonModel{
 		for($i = 0; $i<$len; $i++){
 			$id = $list['id'][$i];
 			$url = $list['url'][$i];
-			$author = $list['author'][$i];
+			$author = empty($list['author'][$i]) ? '无' : $list['author'][$i];
 			$title = $list['title'][$i];
 // 			$publishYear = $list['publishYear'][$i];
 			$returnDate = $list['returnDate'][$i];
