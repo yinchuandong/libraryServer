@@ -28,8 +28,8 @@ class LoanAction extends CommonAction{
 		}
 		
 		$list = $library->getLoanList();
-		
 		$loanModel->addLoanList($studentNumber, $schoolId, $list);
+		
 		$returnList = $loanModel->
 				field(array('schoolId','studentNumber','id','title','author','url','returnDate'))->
 				where(array('studentNumber'=>$studentNumber, 'schoolId'=>$schoolId))->select();
@@ -47,7 +47,7 @@ class LoanAction extends CommonAction{
 	 * @param String studentNumber		(学号或者借书号)必填
 	 * @param Stirng password			(密码)必填
 	 * @param String p					(当前的页码)可选，默认为1
-	 * @param String listRows			(每页显示的数目)可选，默认为4
+	 * @param String listRows			(每页显示的数目)可选，默认为10
 	 */
 	public function getHistoryList(){
 	
@@ -66,14 +66,15 @@ class LoanAction extends CommonAction{
 		if(!$library->checkField($studentNumber, $password)){
 			$this->ajaxReturn('', '用户名或密码错误', 0);
 		}
-	
-		$list = $library->getHistoryList();
+		if (empty($_REQUEST['p'])){
+			$list = $library->getHistoryList();
+		}
 	
 		//数据分页
 		import("ORG.Util.Page");
 		$totalNums = $historyModel->
 			where(array('studentNumber'=>$studentNumber, 'schoolId'=>$schoolId))->count();
-		$listRows = empty($_REQUEST['listRows']) ? 4 : $_REQUEST['listRows'];
+		$listRows = empty($_REQUEST['listRows']) ? 10 : $_REQUEST['listRows'];
 		$page = new Page($totalNums, $listRows);
 		
 		$historyModel->addHistoryList($studentNumber, $schoolId, $list);
@@ -158,6 +159,9 @@ class LoanAction extends CommonAction{
 		$model = new HistoryModel();
 		$bookList = $model->where($where)->select();
 		foreach ($bookList as $book){
+			if(!empty($book['isbn'])){
+				continue;
+			}
 			$title = $book['title'];
 			$info = $helper->getBookInfo($title);
 			$data = array(
@@ -169,9 +173,12 @@ class LoanAction extends CommonAction{
 					'schoolId' => $schoolId,
 					'title' => $title
 			);
-// 			var_dump($info);echo '<br/>';
 			$model->where($where)->data($data)->save();
 		}
+		
+		$bookModel = new BookModel();
+		$bookModel->addItems($bookList);//把历史列表里的书存入书库
+		$bookModel->updateBookInfo();
 		$this->ajaxReturn('','',1);
 		
 	}

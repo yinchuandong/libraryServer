@@ -99,7 +99,7 @@ class IsbnHelper {
 		$pattern .= '<TD(.*)><a(.*)>(.*)<\/a><\/TD>';
 		$pattern .= '<TD(.*)>(.*)<\/TD>';
 		$pattern .= '<TD(.*)>(.*)<\/TD>';
-		$pattern .= '<TD(.*)>(.*)<\/TD>';
+		$pattern .= '<TD(.*)>(.+)<\/TD>';
 		$pattern .= '<TD(.*)>(.*)<\/TD>';
 		$pattern .= '<TD(.*)>(.*)<\/TD>';
 		$pattern .= '<TD(.*)>(.*)<\/TD>';

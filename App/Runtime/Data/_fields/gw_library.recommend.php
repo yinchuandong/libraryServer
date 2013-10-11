@@ -1,1 +1,1 @@
-{"0":"bookId","1":"studentNumber","2":"recommendisbn","3":"schoolId","4":"recommendTime","_autoinc":false,"_pk":"schoolId","_type":{"bookId":"int(11)","studentNumber":"char(20)","recommendisbn":"text","schoolId":"int(11)","recommendTime":"int(20)"}}
+{"0":"bookId","1":"studentNumber","2":"schoolId","3":"recommendisbn","4":"recommendTime","_autoinc":true,"_pk":"schoolId","_type":{"bookId":"int(11)","studentNumber":"char(20)","schoolId":"int(11)","recommendisbn":"varchar(100)","recommendTime":"int(11)"}}

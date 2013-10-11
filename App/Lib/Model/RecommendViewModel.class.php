@@ -4,6 +4,6 @@ class RecommendViewModel extends ViewModel{
 			'Recommend'=>array('bookId'=>'id', 'schoolId', 'studentNumber', 'recommendTime'),
 			'Book'=>array(
 					'title', 'author', 'url', 'isbn', 'callNumber', 'cover', 
-					'_on'=>'Recommend.bookId = Book.id'),
+					'_on'=>'Recommend.recommendisbn = Book.isbn'),
 	);
 }
