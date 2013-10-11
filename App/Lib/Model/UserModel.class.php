@@ -19,6 +19,6 @@ class UserModel extends CommonModel{
 		}
 	}
 	public function getUsers(){
-		return $this->field("studentNumber")->select();
+		return $this->field("studentNumber,schoolId")->select();
 	}
 }

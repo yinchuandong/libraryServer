@@ -61,8 +61,10 @@ class RecommendAction extends CommonAction{
 		return $result;
 	}
 
-	
-	function getRecommendation(){
+	/**
+	*原来的生成推荐函数
+	**/	
+/*	function getRecommendation(){
 		import('@.ORG.library');
 		if($_REQUEST){
 			$studentNumber = $this->_request("studentNumber");
@@ -77,7 +79,39 @@ class RecommendAction extends CommonAction{
 		}
 		
 		
+	}*/
+
+	function getRecommendation(){
+		echo '<meta charset="utf-8">';
+		//if($_REQUEST){
+			//$mystudentNumber = $this->_request("studentNumber");
+			//$schoolId = $this->_request("schoolId");
+			import('@.ORG.recommend');
+			$recommend = new recommend();
+			$mystudentNumber = "20111003444";
+			$id = 1;
+			$oneUser['studentNumber'] = $mystudentNumber;
+			$oneUser['schoolId'] = $id;
+			$historyModel = D('History');
+			$bookModel = D('Book');
+			$userModel = D('User');
+			$recommend->setOneUser($oneUser);
+			$oneUserHistory = $historyModel->getUserHistory($mystudentNumber);
+			$recommend->setOneUserHistory($oneUserHistory);
+			$users = $userModel->getUsers();
+			$recommend->setUser($users);
+			$history = $historyModel->getAllHistory();
+			$recommend->setHistory($history);
+			$result = $recommend->getRecommendBook();
+			$this->updateRecommend($mystudentNumber,$result,$id);
+			var_dump($result);
+			for($i = 0; $i < count($result); $i++){
+				$where = array("isbn"=>$result[$i]);
+				var_dump($historyModel->field('title')->where($where)->find());
+			}
+		//}
 	}
+
 
 	function updateRecommend($studentNumber,$recommend,$schoolId){
 		$model = D('Recommend');
@@ -105,6 +139,36 @@ class RecommendAction extends CommonAction{
 		}
 // 		var_dump($list);
 	}
+
+
+
+	public function shishi(){
+		echo '<meta charset="utf-8">';
+		import('@.ORG.recommend');
+		$recommend = new recommend();
+		$mystudentNumber = "20111003444";
+		$id = 1;
+		$oneUser['studentNumber'] = $mystudentNumber;
+		$oneUser['schoolId'] = $id;
+		$historyModel = D('History');
+		$bookModel = D('Book');
+		$userModel = D('User');
+		$recommend->setOneUser($oneUser);
+		$oneUserHistory = $historyModel->getUserHistory($mystudentNumber);
+		$recommend->setOneUserHistory($oneUserHistory);
+		$users = $userModel->getUsers();
+		$recommend->setUser($users);
+		$history = $historyModel->getAllHistory();
+		$recommend->setHistory($history);
+		$result = $recommend->getRecommendBook();
+		var_dump($result);
+		for($i = 0; $i < count($result); $i++){
+			$where = array("isbn"=>$result[$i]);
+			var_dump($historyModel->field('title')->where($where)->find());
+		}
+		
+	}
+
 	
 	
 	

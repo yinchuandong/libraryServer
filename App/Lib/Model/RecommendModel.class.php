@@ -19,14 +19,20 @@ class RecommendModel extends CommonModel{
 	}
 	
 
-	public function addRecommend($studentNumber,$re,$schoolId=1){
-		echo count($re);
-		for ($i=count($re); $i < count($re); $i--) { 
+	public function addRecommend($studentNumber, $re, $schoolId=1){
+		for ($i=0; $i < count($re); $i++) { 
 			$data['recommendisbn'] = $re[$i];
 			$data['studentNumber']=$studentNumber;
 			$data['schoolId'] = $schoolId;
-			$this->data($data)->add();
-			echo $re[$i];
+			$data['recommendTime'] = time();
+			$where = array('recommendisbn'=>$re[$i]);
+			if($result = $this->where($where)->find()){
+				$where = array('bookId'=>$result['bookId']);
+				$this->where($where)->save($data);
+			}else{
+				$this->data($data)->add();
+			}
+			
 		}
 		
 		
