@@ -59,8 +59,9 @@ class Recommendate{
 			}
 		}
 		$sum = 0;
-		for ($i=0; $i < strlen($sub); $i++) { 
-			if($sub[$i]==1)$sum += pow(2, $i);
+		$len = strlen($sub);
+		for ($i=0; $i < $len; $i++) { 
+			if($sub[$i]==1)$sum += pow(2, $len-$i);
 		}
 		return $sum;
 	}

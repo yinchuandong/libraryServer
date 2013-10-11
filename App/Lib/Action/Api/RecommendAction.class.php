@@ -26,8 +26,10 @@ class RecommendAction extends CommonAction{
 			$this->ajaxReturn('', '用户名或密码错误', 0);
 		}
 		
-		//计算推荐的书
-		$this->calculateRecommend(); 
+		if (empty($_REQUEST['p'])){
+			//计算推荐的书
+			$this->calculateRecommend();
+		}
 		
 		//数据分页
 		import("ORG.Util.Page");
@@ -115,7 +117,14 @@ class RecommendAction extends CommonAction{
 	}
 	
 	
-	
+	function mergeHisotryToBook(){
+		$model = new BookModel();
+		$mergeData = $model->query("select distinct(isbn),title,author,callNumber from gw_history as h where h.isbn not in (select b.isbn from gw_book as b where isbn is not null and callNumber is not null)");
+		foreach ($mergeData as $row){
+			$model->data($row)->add();
+		}
+		var_dump($mergeData);
+	}
 	
 	
 	
