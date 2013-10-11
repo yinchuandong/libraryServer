@@ -8,12 +8,21 @@ class Recommendate{
 	private $preferenceisbn = array();
 	public $book = array();
 
+	/**
+	 * 设置用户历史的isbn
+	 * @param unknown_type $pre
+	 */
 	public function setPreference($pre){
 		$this->preference = $pre;
 		for ($i=0; $i < count($pre); $i++) { 
 			array_push($this->preferenceisbn, $pre[$i]['isbn']);
 		}
 	}
+	
+	/**
+	 * 设置所有的历史书库
+	 * @param array $b
+	 */
 	public function setBooks($b){
 		$this->book = $b;
 	}
