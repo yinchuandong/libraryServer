@@ -26,6 +26,11 @@ class RecommendAction extends CommonAction{
 			$this->ajaxReturn('', '用户名或密码错误', 0);
 		}
 		
+		if (empty($_REQUEST['p'])){
+			//计算推荐的书
+			$this->getRecommendation();
+		}
+		
 		//数据分页
 		import("ORG.Util.Page");
 		$model = new RecommendViewModel();
@@ -35,7 +40,7 @@ class RecommendAction extends CommonAction{
 		);
 		$totalNums = $model->where($where)->count();
 		
-		$listRows = empty($_REQUEST['listRows']) ? 4 : $_REQUEST['listRows'];
+		$listRows = empty($_REQUEST['listRows']) ? 10 : $_REQUEST['listRows'];
 		$page = new Page($totalNums, $listRows);
 		$data = $model->where($where)->order('recommendTime desc')->
 					limit($page->firstRow.','.$page->listRows)->select();
@@ -48,6 +53,24 @@ class RecommendAction extends CommonAction{
 		}
 		
 	}
+	
+	function calculateRecommend(){
+		import('@.ORG.library');
+		if($_REQUEST){
+			$studentNumber = $this->_request("studentNumber");
+			$schoolId = $this->_request("schoolId");
+			$histories = $this->getAllHistory();
+			$re = new Recommendate();
+			$result = $this->getUserHistory($studentNumber);
+			$re->setPreference($result);
+			$re->setBooks($histories);
+			$result = $re->recommendateBook();
+			$this->updateRecommend($studentNumber,$result,$schoolId);
+		}
+	
+	}
+	
+	
 
 	public function getUserHistory($studentNumber){
 		$model = D('History');
@@ -61,35 +84,16 @@ class RecommendAction extends CommonAction{
 		return $result;
 	}
 
-	/**
-	*原来的生成推荐函数
-	**/	
-/*	function getRecommendation(){
-		import('@.ORG.library');
-		if($_REQUEST){
-			$studentNumber = $this->_request("studentNumber");
-			$schoolId = $this->_request("schoolId");
-			$histories = $this->getAllHistory();
-			$re = new Recommendate();
-			$result = $this->getUserHistory($studentNumber);
-			$re->setPreference($result);
-			$re->setBooks($histories);
-			$result = $re->recommendateBook();
-			$this->updateRecommend($studentNumber,$result,$schoolId);
-		}
-		
-		
-	}*/
 
 	function getRecommendation(){
-		echo '<meta charset="utf-8">';
-		//if($_REQUEST){
-			//$mystudentNumber = $this->_request("studentNumber");
-			//$schoolId = $this->_request("schoolId");
+// 		echo '<meta charset="utf-8">';
+		if($_REQUEST){
+			$mystudentNumber = $this->_request("studentNumber");
+			$schoolId = $this->_request("schoolId");
 			import('@.ORG.recommend');
 			$recommend = new recommend();
-			$mystudentNumber = "20111003444";
-			$id = 1;
+// 			$mystudentNumber = "20111003444";
+			$id = $schoolId;
 			$oneUser['studentNumber'] = $mystudentNumber;
 			$oneUser['schoolId'] = $id;
 			$historyModel = D('History');
@@ -104,12 +108,12 @@ class RecommendAction extends CommonAction{
 			$recommend->setHistory($history);
 			$result = $recommend->getRecommendBook();
 			$this->updateRecommend($mystudentNumber,$result,$id);
-			var_dump($result);
-			for($i = 0; $i < count($result); $i++){
-				$where = array("isbn"=>$result[$i]);
-				var_dump($historyModel->field('title')->where($where)->find());
-			}
-		//}
+// 			var_dump($result);
+// 			for($i = 0; $i < count($result); $i++){
+// 				$where = array("isbn"=>$result[$i]);
+// // 				var_dump($historyModel->field('title')->where($where)->find());
+// 			}
+		}
 	}
 
 
@@ -141,33 +145,6 @@ class RecommendAction extends CommonAction{
 	}
 
 
-
-	public function shishi(){
-		echo '<meta charset="utf-8">';
-		import('@.ORG.recommend');
-		$recommend = new recommend();
-		$mystudentNumber = "20111003444";
-		$id = 1;
-		$oneUser['studentNumber'] = $mystudentNumber;
-		$oneUser['schoolId'] = $id;
-		$historyModel = D('History');
-		$bookModel = D('Book');
-		$userModel = D('User');
-		$recommend->setOneUser($oneUser);
-		$oneUserHistory = $historyModel->getUserHistory($mystudentNumber);
-		$recommend->setOneUserHistory($oneUserHistory);
-		$users = $userModel->getUsers();
-		$recommend->setUser($users);
-		$history = $historyModel->getAllHistory();
-		$recommend->setHistory($history);
-		$result = $recommend->getRecommendBook();
-		var_dump($result);
-		for($i = 0; $i < count($result); $i++){
-			$where = array("isbn"=>$result[$i]);
-			var_dump($historyModel->field('title')->where($where)->find());
-		}
-		
-	}
 
 	
 	
