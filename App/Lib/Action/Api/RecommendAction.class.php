@@ -42,7 +42,7 @@ class RecommendAction extends CommonAction{
 		
 		$listRows = empty($_REQUEST['listRows']) ? 10 : $_REQUEST['listRows'];
 		$page = new Page($totalNums, $listRows);
-		$data = $model->where($where)->order('recommendTime desc')->
+		$data = $model->distinct(true)->where($where)->order('recommendTime desc')->
 					limit($page->firstRow.','.$page->listRows)->select();
 		
 		if ($data != false){
