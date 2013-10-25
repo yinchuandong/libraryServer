@@ -16,8 +16,16 @@ return array(
     'URL_ROUTER_ON' => true,
     'SHOW_PAGE_TRACE'=>true,
 	
-    'APP_GROUP_LIST'        => 'Api,Admin',      // 项目分组设定,多个组之间用逗号分隔,例如'Home,Admin'
-	'DEFAULT_GROUP'         => 'Api',  // 默认分组
+    'APP_GROUP_LIST'        => 'Api,Admin,Home',      // 项目分组设定,多个组之间用逗号分隔,例如'Home,Admin'
+	'DEFAULT_GROUP'         => 'Home',  // 默认分组
+	
+	/* 资源路径 */
+	'TMPL_PARSE_STRING'     => array(
+			'__CSS__' => __ROOT__.'/Public/css',         // css路径
+			'__IMG__' => __ROOT__.'/Public/img',      // 图片路径
+			'__JS__' => __ROOT__.'/Public/js',           // js路径
+			'__UPLOAD__' => __ROOT__.'/Upload',  // 上传文件路径
+	),
 	
 	/*缓存*/
     'TMPL_CACHE_ON'    => false,
