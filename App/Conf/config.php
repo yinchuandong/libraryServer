@@ -14,7 +14,7 @@ return array(
 //     'APP_AUTOLOAD_PATH'=>'@.TagLib,@.ORG',
     'TOKEN_ON'  => false,
     'URL_ROUTER_ON' => true,
-    'SHOW_PAGE_TRACE'=>true,
+    'SHOW_PAGE_TRACE'=>false,
 	
     'APP_GROUP_LIST'        => 'Api,Admin,Home',      // 项目分组设定,多个组之间用逗号分隔,例如'Home,Admin'
 	'DEFAULT_GROUP'         => 'Home',  // 默认分组
