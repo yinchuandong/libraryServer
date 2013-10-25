@@ -36,7 +36,7 @@ class BookModel extends CommonModel{
 		$model = D('Book');
 		vendor('IsbnHelper.CoverHelper');
 		$helper = new CoverHelper();
-		$list = $model->field(array('isbn','title'))->where('cover is null')->limit('0 20')->select();
+		$list = $model->field(array('isbn','title'))->where('cover is null')->limit('0,20')->select();
 		foreach ($list as $row){
 				
 			$isbn = str_replace("-", "", $row['isbn']);
