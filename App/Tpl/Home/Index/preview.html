@@ -5,9 +5,31 @@
         <meta http-equiv="Content-Type" content="text/html" charset="utf-8"/>
         <meta name="viewport"  content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0" />
         <link rel="stylesheet" href="__CSS__/main.css" />
-        <script type="text/javascript">
+<script type="text/javascript">
+window.onload = function(){
+    remoteJsonp('http://218.244.136.178/superlibraryserver/index.php/Api/Apk/checkApk?callback=callback');
+}
 
-        </script>
+function remoteJsonp(url){
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = url;
+    var head = document.getElementsByTagName('head')[0];
+    head.appendChild(script);
+    head.removeChild(script);
+}
+
+function callback(result){
+    result = eval(result);
+    var data = result.data;
+    var apk = data.Apk;
+    var url = apk.apkUrl;
+    var versionName = apk.apkName;
+    
+    var downBtn = document.getElementById('download-btn');
+    downBtn.href = url;
+}
+</script>
     </head>
     <body>
         <div class="wrapper">
@@ -28,7 +50,7 @@
                 <div class="panel" id="link" style="width:320px">
                     <div class="content">
                         点击或扫描二维码下载
-                        <a href="http://218.244.136.178/superlibraryserver/Upload/app/SuperLibrary.apk" class="bigBtn">
+                        <a id="download-btn" href="#" class="bigBtn">
                         下载
                         </a>
                         <img src="__IMG__/download.png" alt="download" />
